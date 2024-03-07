@@ -17,7 +17,7 @@ export const login = async (req, res) => {
     }
 
     generateTokenAndSetCookie(user._id, res);
-
+    console.log("generated token and set cookie");
     return res.status(200).json({
       _id: user._id,
       fullName: user.fullName,
