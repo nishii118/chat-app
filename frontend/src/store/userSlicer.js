@@ -4,6 +4,7 @@ import axios from "axios";
 
 const initialState = {
   isAuthUser: false,
+  user: [],
   status: "idle",
   error: null,
 };
@@ -27,7 +28,7 @@ export const logIn = createAsyncThunk("signIn", async (inputs) => {
         username: inputs.username,
         password: inputs.password,
       }),
-      { headers: { "Content-Type": "application/json" }, withCredentials: true, }
+      { headers: { "Content-Type": "application/json" }, withCredentials: true }
     );
 
     const data = await response.data;
@@ -81,7 +82,7 @@ export const signUp = createAsyncThunk("signUp", async (inputs) => {
         confirmPassword: inputs.confirmPassword,
         gender: inputs.gender,
       }),
-      { headers: { "Content-Type": "application/json" }, withCredentials: true, }
+      { headers: { "Content-Type": "application/json" }, withCredentials: true }
     );
 
     const data = await response.data;
@@ -180,34 +181,41 @@ export const userSlicer = createSlice({
         state.status = "loading";
         // state.isAuthUser = false;
       })
-      .addCase(signUp.fulfilled, (state) => {
+      .addCase(signUp.fulfilled, (state, action) => {
         state.status = "succeeded";
         state.isAuthUser = true;
+        state.user = action.payload;
+        // JSON.stringify(data)
+        console.log(state.user);
       })
       .addCase(signUp.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
         // state.isAuthUser = false;
       })
-      .addCase(logIn.pending, (state) => {
+      .addCase(logIn.pending, () => {
         console.log("login pending");
         // state.isAuthUser = false;
       })
-      .addCase(logIn.fulfilled, (state) => {
+      .addCase(logIn.fulfilled, (state, action) => {
         console.log("login fulfilled");
         state.isAuthUser = true;
+        state.user = action.payload;
+        console.log(state.user);
       })
-      .addCase(logIn.rejected, (state) => {
+      .addCase(logIn.rejected, () => {
         console.log("login reject");
         // state.isAuthUser = false;
+        
+        
       })
-      .addCase(logOut.pending, (state) => {
+      .addCase(logOut.pending, () => {
         // state.isAuthUser = true;
       })
       .addCase(logOut.fulfilled, (state) => {
         state.isAuthUser = false;
       })
-      .addCase(logOut.rejected, (state) => {
+      .addCase(logOut.rejected, () => {
         // state.isAuthUser = true;
       });
   },

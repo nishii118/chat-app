@@ -6,7 +6,7 @@ import { Conversations } from "./Conversations";
 export function LeftSideBar() {
   const dispatch = useDispatch();
   return (
-    <div className="flex flex-col gap-5 overflow-hidden">
+    <div className="flex p-5 flex-col gap-5 overflow-auto bg-[#a4a8c8]">
       <div className="flex flex-row justify-between items-center">
         <h1 className="text-2xl">Chats</h1>
         <svg

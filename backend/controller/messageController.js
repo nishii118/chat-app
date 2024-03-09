@@ -5,7 +5,6 @@ export const sendMessage = async (req, res) => {
     const { message } = req.body;
     const { id: receiverId } = req.params;
     const senderId = req.user._id;
-
     const conversation = await Conversation.findOne({
       participants: { $all: [senderId, receiverId] },
     });
@@ -27,6 +26,7 @@ export const sendMessage = async (req, res) => {
     }
 
     await Promise.all([conversation.save(), newMessage.save()]);
+    // console.log("error in take id");
 
     res.status(201).json(newMessage);
   } catch (error) {
